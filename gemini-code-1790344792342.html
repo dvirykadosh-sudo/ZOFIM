@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מחולל פעולות דביר קדוש - שבט מעוז</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+<style>
+  :root{
+    --khaki: #c3b091;
+    --khaki-dark: #a08c66;
+    --green-deep: #35452e;
+    --green-mid: #4f6b3d;
+    --green-bright: #6f9450;
+    --cream: #f6f3ea;
+    --paper: #fffdf8;
+    --ink: #2a2a22;
+    --ink-soft: #55584c;
+    --border: #d8cfb8;
+    --danger: #a5432f;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family: 'Segoe UI', 'Heebo', Arial, sans-serif;
+    background: linear-gradient(180deg, var(--green-deep) 0%, var(--green-deep) 140px, var(--cream) 140px);
+    color: var(--ink);
+    min-height: 100vh;
+    padding-bottom: 60px;
+  }
+  header.site-header{
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 28px 20px 18px;
+    text-align: center;
+    color: var(--cream);
+  }
+  header.site-header .badge{
+    display:inline-block;
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    background: var(--khaki);
+    border: 3px solid var(--cream);
+    margin-bottom: 10px;
+    position: relative;
+  }
+  header.site-header .badge::after{
+    content: "צ";
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700; color: var(--green-deep); font-size:20px;
+  }
+  header.site-header h1{
+    margin: 0 0 4px;
+    font-size: 1.5rem;
+    letter-spacing: 0.5px;
+  }
+  header.site-header p{
+    margin: 0;
+    color: var(--khaki);
+    font-size: 0.9rem;
+  }
+
+  main{
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  .card{
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 0 var(--border);
+  }
+  .card h2{
+    margin: 0 0 14px;
+    font-size: 1.05rem;
+    color: var(--green-deep);
+    border-bottom: 2px solid var(--khaki);
+    padding-bottom: 8px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .card h2 .num{
+    background: var(--green-mid);
+    color: var(--cream);
+    width: 24px; height: 24px;
+    border-radius: 6px;
+    display:flex; align-items:center; justify-content:center;
+    font-size: 0.85rem;
+  }
+
+  label{
+    display:block;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  input[type="text"], input[type="number"], textarea{
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    background: #fff;
+    color: var(--ink);
+  }
+  input[type="text"]:focus, input[type="number"]:focus, textarea:focus{
+    outline: none;
+    border-color: var(--green-mid);
+    box-shadow: 0 0 0 3px rgba(111,148,80,0.18);
+  }
+  textarea{ resize: vertical; min-height: 110px; }
+
+  .field{ margin-bottom: 16px; }
+  .field:last-child{ margin-bottom: 0; }
+
+  .row2{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  @media (max-width: 560px){
+    .row2{ grid-template-columns: 1fr; }
+  }
+  .row3{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+  }
+  @media (max-width: 700px){
+    .row3{ grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 480px){
+    .row3{ grid-template-columns: 1fr; }
+  }
+  select{
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    background: #fff;
+    color: var(--ink);
+  }
+  select:focus{
+    outline: none;
+    border-color: var(--green-mid);
+    box-shadow: 0 0 0 3px rgba(111,148,80,0.18);
+  }
+  .hint{
+    font-size: 0.76rem;
+    color: var(--ink-soft);
+    margin-top: 5px;
+    font-weight: 400;
+  }
+
+  .file-drop{
+    border: 2px dashed var(--khaki-dark);
+    border-radius: 8px;
+    padding: 18px;
+    text-align: center;
+    background: var(--cream);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .file-drop:hover{ background: #efe9d8; }
+  .file-drop input{ display:none; }
+  .file-drop .fname{
+    margin-top: 8px;
+    font-size: 0.85rem;
+    color: var(--green-deep);
+    font-weight: 600;
+  }
+  .or-sep{
+    display:flex; align-items:center; gap:10px;
+    margin: 14px 0;
+    color: var(--ink-soft);
+    font-size: 0.82rem;
+  }
+  .or-sep::before, .or-sep::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background: var(--border);
+  }
+
+  .methods-grid{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  @media (max-width: 480px){
+    .methods-grid{ grid-template-columns: 1fr; }
+  }
+  .method-item{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: #fff;
+    cursor:pointer;
+    font-size: 0.9rem;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .method-item:has(input:checked){
+    background: #eef4e6;
+    border-color: var(--green-mid);
+  }
+  .method-item input{
+    accent-color: var(--green-mid);
+    width: 17px; height: 17px;
+    flex-shrink:0;
+  }
+
+  .generate-btn{
+    display:block;
+    width: 100%;
+    padding: 15px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--cream);
+    background: var(--green-mid);
+    border: none;
+    border-radius: 9px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .generate-btn:hover{ background: var(--green-deep); }
+  .generate-btn:active{ transform: scale(0.99); }
+  .generate-btn:disabled{
+    background: #9aa591;
+    cursor: not-allowed;
+  }
+
+  .status-line{
+    text-align:center;
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    min-height: 18px;
+  }
+  .status-line.error{ color: var(--danger); font-weight:600; }
+
+  #resultSection{ display:none; margin-top: 18px; }
+
+  .result-toolbar{
+    display:flex;
+    gap:10px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .result-toolbar button{
+    flex:1;
+    min-width: 140px;
+    padding: 10px 14px;
+    border-radius: 7px;
+    border: 1px solid var(--green-mid);
+    background: #fff;
+    color: var(--green-deep);
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.15s;
+  }
+  .result-toolbar button:hover{ background: #eef4e6; }
+  .result-toolbar button.primary{
+    background: var(--khaki-dark);
+    color: #fff;
+    border-color: var(--khaki-dark);
+  }
+  .result-toolbar button.primary:hover{ background: #8f7c53; }
+
+  #resultOutput{
+    background: #fffefb;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    white-space: pre-wrap;
+    line-height: 1.75;
+    font-size: 0.98rem;
+    min-height: 200px;
+  }
+  #resultOutput h1, #resultOutput h2, #resultOutput h3{
+    color: var(--green-deep);
+  }
+
+  .spinner{
+    display:inline-block;
+    width: 16px; height:16px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    vertical-align: middle;
+    margin-left: 8px;
+  }
+  @keyframes spin{ to{ transform: rotate(360deg); } }
+
+  footer{
+    text-align:center;
+    color: var(--ink-soft);
+    font-size: 0.78rem;
+    margin-top: 24px;
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="badge"></div>
+  <h1>מחולל פעולות דביר קדוש - שבט מעוז</h1>
+  <p>יוצר פעולות צופים חדשות בסגנון שלכם, ללא צורך במפתח API</p>
+</header>
+
+<main>
+
+  <div class="card">
+    <h2><span class="num">1</span> פרטי הפעולה</h2>
+    <div class="row3">
+      <div class="field">
+        <label for="nameInput">שם הפעולה</label>
+        <input type="text" id="nameInput" placeholder="לדוגמה: המסע אל עצמי">
+      </div>
+      <div class="field">
+        <label for="topicInput">נושא / ערך מרכזי</label>
+        <input type="text" id="topicInput" placeholder="לדוגמה: אחריות אישית">
+      </div>
+      <div class="field">
+        <label for="ageGroupInput">שכבת גיל</label>
+        <select id="ageGroupInput">
+          <option value="ד">כיתה ד'</option>
+          <option value="ה" selected>כיתה ה'</option>
+          <option value="ו">כיתה ו'</option>
+          <option value="ז">כיתה ז'</option>
+          <option value="ח">כיתה ח'</option>
+          <option value="ט">כיתה ט'</option>
+        </select>
+      </div>
+    </div>
+    <div class="row2" style="margin-top:16px;">
+      <div class="field">
+        <label for="durationInput">זמן כולל בדקות</label>
+        <input type="number" id="durationInput" placeholder="לדוגמה: 60" min="5" step="5">
+      </div>
+      <div class="field">
+        <label for="activityTypeInput">סוג הפעולה</label>
+        <select id="activityTypeInput">
+          <option value="פעולת תוכן">פעולת תוכן</option>
+          <option value="פעולת נושא">פעולת נושא</option>
+          <option value="פעולת משחק">פעולת משחק</option>
+          <option value="פעולת תחקור">פעולת תחקור</option>
+          <option value="פעולה חברתית / גיבוש">פעולה חברתית / גיבוש</option>
+          <option value="פעולת שטח / טיול">פעולת שטח / טיול</option>
+          <option value="פעולת פתיחה / סיום עונה">פעולת פתיחה / סיום עונה</option>
+          <option value="פעולת יוזמה / פרויקט">פעולת יוזמה / פרויקט</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="num">2</span> מודל לחיקוי</h2>
+    <label>העלאת קובץ פעולה קיים (Word / טקסט)</label>
+    <div class="file-drop" id="fileDropArea">
+      <input type="file" id="modelFileInput" accept=".txt,.docx,.doc">
+      <div>לחצו כאן לבחירת קובץ, או גררו אותו לכאן</div>
+      <div class="fname" id="fileNameLabel"></div>
+    </div>
+    <div class="or-sep">או</div>
+    <div class="field">
+      <label for="modelTextInput">הדביקו כאן טקסט של פעולה קיימת (גיבוי אם אין קובץ)</label>
+      <textarea id="modelTextInput" placeholder="הדביקו כאן את הפעולה שתשמש כמודל לסגנון, למבנה ולניסוח..."></textarea>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="num">3</span> בחירת מתודות</h2>
+    <label>סמנו את המתודות שה-AI רשאי לשלב בפעולה</label>
+    <div class="methods-grid" id="methodsGrid">
+      <label class="method-item"><input type="checkbox" value="הבעה יצירתית"> הבעה יצירתית</label>
+      <label class="method-item"><input type="checkbox" value="ייצוג"> ייצוג</label>
+      <label class="method-item"><input type="checkbox" value="עשייה"> עשייה</label>
+      <label class="method-item"><input type="checkbox" value="משחק תחרות"> משחק תחרות</label>
+      <label class="method-item"><input type="checkbox" value="שיתוף"> שיתוף</label>
+      <label class="method-item"><input type="checkbox" value="דיון בשאלה"> דיון בשאלה</label>
+      <label class="method-item"><input type="checkbox" value="חשיבה משותפת"> חשיבה משותפת</label>
+      <label class="method-item"><input type="checkbox" value="השראה"> השראה</label>
+      <label class="method-item"><input type="checkbox" value="פירוק"> פירוק</label>
+      <label class="method-item"><input type="checkbox" value="הסבר"> הסבר</label>
+      <label class="method-item"><input type="checkbox" value="התבוננות"> התבוננות</label>
+      <label class="method-item"><input type="checkbox" value="משחק הדמייה"> משחק הדמייה</label>
+    </div>
+  </div>
+
+  <button class="generate-btn" id="generateBtn">צור פעולה!</button>
+  <div class="status-line" id="statusLine"></div>
+
+  <div class="card" id="resultSection">
+    <h2><span class="num">4</span> הפעולה שנוצרה</h2>
+    <div class="result-toolbar">
+      <button class="primary" id="exportPdfBtn">ייצוא ל-PDF</button>
+      <button class="primary" id="exportWordBtn">ייצוא ל-Word</button>
+      <button id="copyBtn">העתקת טקסט</button>
+    </div>
+    <div id="resultMeta" style="margin-bottom:12px;"></div>
+    <div id="resultOutput"></div>
+  </div>
+
+</main>
+
+<footer>שבט מעוז &middot; כלי פנימי למדריכים</footer>
+
+<script>
+(function(){
+  const fileInput = document.getElementById('modelFileInput');
+  const fileDropArea = document.getElementById('fileDropArea');
+  const fileNameLabel = document.getElementById('fileNameLabel');
+  const modelTextInput = document.getElementById('modelTextInput');
+  const generateBtn = document.getElementById('generateBtn');
+  const statusLine = document.getElementById('statusLine');
+  const resultSection = document.getElementById('resultSection');
+  const resultOutput = document.getElementById('resultOutput');
+
+  let uploadedModelText = "";
+
+  fileDropArea.addEventListener('click', () => fileInput.click());
+  fileDropArea.addEventListener('dragover', (e) => { e.preventDefault(); });
+  fileDropArea.addEventListener('drop', (e) => {
+    e.preventDefault();
+    if (e.dataTransfer.files.length) {
+      fileInput.files = e.dataTransfer.files;
+      handleFile(e.dataTransfer.files[0]);
+    }
+  });
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files.length) handleFile(fileInput.files[0]);
+  });
+
+  function handleFile(file){
+    fileNameLabel.textContent = "נבחר: " + file.name;
+    const name = file.name.toLowerCase();
+    if (name.endsWith('.docx')) {
+      const reader = new FileReader();
+      reader.onload = function(e){
+        mammoth.extractRawText({arrayBuffer: e.target.result})
+          .then(result => { uploadedModelText = result.value; })
+          .catch(err => {
+            statusLine.textContent = "שגיאה בקריאת קובץ ה-Word: " + err.message;
+            statusLine.classList.add('error');
+          });
+      };
+      reader.readAsArrayBuffer(file);
+    } else {
+      const reader = new FileReader();
+      reader.onload = function(e){ uploadedModelText = e.target.result; };
+      reader.readAsText(file);
+    }
+  }
+
+  function getSelectedMethods(){
+    return Array.from(document.querySelectorAll('#methodsGrid input[type="checkbox"]:checked'))
+      .map(cb => cb.value);
+  }
+
+  function buildPrompt(name, topic, ageGroup, activityType, duration, modelText, methods){
+    const methodsList = methods.join('", "');
+    const docTitle = "דביר קדוש" + (name ? " - " + name : "");
+    return [
+      `אתה עוזר למדריך צופים בכתיבת פעולה חדשה לגמרי, בעברית.`,
+      `כותרת הפעולה (יש לפתוח איתה את המסמך): "${docTitle}"`,
+      `נושא / ערך מרכזי: "${topic}"`,
+      `שכבת גיל: "${ageGroup}"`,
+      `סוג הפעולה: "${activityType}"`,
+      `זמן כולל לפעולה: ${duration} דקות`,
+      `מתודות מאושרות לשילוב: "${methodsList}"`,
+      ``,
+      `להלן מודל לחיקוי לסגנון הכתיבה והמבנה הכללי:`,
+      `"""`,
+      modelText || "(כתוב בסגנון פעולת צופים קלאסית עם סבב שמות, דיונים וסיכום מדריך)",
+      `"""`,
+      ``,
+      `חוקי ברזל:`,
+      `1. לכל מתודה בפעולה, חובה לרשום במפורש (א) מהי המתודה מתוך אלו שסומנו, ו-(ב) כמה זמן היא תיקח. סכום הזמנים חייב להיות שווה לזמן הכולל.`,
+      `2. השתמש אך ורק במתודות מהרשימה המאושרת.`,
+      `3. שמור על המבנה: סבב שמות, חלוקה לחלקים ממוספרים, וסגירה הכוללת מסר.`,
+      `כתוב כעת את הפעולה בעברית מלאה.`
+    ].join('\n');
+  }
+
+  generateBtn.addEventListener('click', async () => {
+    statusLine.classList.remove('error');
+    const name = document.getElementById('nameInput').value.trim();
+    const topic = document.getElementById('topicInput').value.trim();
+    const ageGroup = document.getElementById('ageGroupInput').value.trim();
+    const activityType = document.getElementById('activityTypeInput').value;
+    const duration = document.getElementById('durationInput').value.trim();
+    const methods = getSelectedMethods();
+    const modelText = uploadedModelText.trim() || modelTextInput.value.trim();
+
+    if (!name || !topic || !duration) {
+      statusLine.textContent = "נא למלא שם פעולה, נושא וזמן כולל.";
+      statusLine.classList.add('error');
+      return;
+    }
+    if (methods.length === 0) {
+      statusLine.textContent = "נא לסמן לפחות מתודה אחת.";
+      statusLine.classList.add('error');
+      return;
+    }
+
+    const prompt = buildPrompt(name, topic, ageGroup, activityType, duration, modelText, methods);
+
+    generateBtn.disabled = true;
+    generateBtn.innerHTML = 'יוצר פעולה...<span class="spinner"></span>';
+    statusLine.textContent = "";
+
+    try {
+      // שימוש ב-API חינמי פתוח שאינו דורש מפתח ועוקף חסימות CORS
+      const response = await fetch("https://text.pollinations.ai/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: [
+            { role: "system", content: "אתה עוזר מומחה לכתיבת פעולות צופים בעברית." },
+            { role: "user", content: prompt }
+          ]
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error("שגיאת תקשורת מול השרת הפתוח.");
+      }
+
+      const generatedText = await response.text();
+
+      resultOutput.textContent = generatedText;
+      const docTitle = "דביר קדוש" + (name ? " - " + name : "");
+      resultSection.dataset.docTitle = docTitle;
+      resultSection.dataset.ageGroup = ageGroup;
+      document.getElementById('resultMeta').innerHTML =
+        '<div style="font-size:1.15rem; font-weight:700; color:var(--green-deep);">' + docTitle + '</div>' +
+        '<div style="font-size:0.85rem; color:var(--ink-soft); margin-top:2px;">שכבת גיל: ' + ageGroup + ' &middot; סוג פעולה: ' + activityType + '</div>';
+      resultSection.style.display = 'block';
+      resultSection.scrollIntoView({ behavior: 'smooth' });
+    } catch (err) {
+      statusLine.textContent = "אירעה שגיאה: " + err.message + " (נסה שוב)";
+      statusLine.classList.add('error');
+    } finally {
+      generateBtn.disabled = false;
+      generateBtn.textContent = "צור פעולה!";
+    }
+  });
+
+  document.getElementById('copyBtn').addEventListener('click', () => {
+    navigator.clipboard.writeText(resultOutput.textContent).then(() => {
+      statusLine.textContent = "הטקסט הועתק ללוח.";
+      statusLine.classList.remove('error');
+    });
+  });
+
+  function getFileBaseName(){
+    const docTitle = resultSection.dataset.docTitle || (document.getElementById('nameInput').value.trim() || "פעולה");
+    const ageGroup = resultSection.dataset.ageGroup;
+    return docTitle + (ageGroup ? " - " + ageGroup : "");
+  }
+
+  document.getElementById('exportPdfBtn').addEventListener('click', () => {
+    const docTitle = resultSection.dataset.docTitle || "דביר קדוש";
+    const ageGroup = resultSection.dataset.ageGroup;
+    const opt = {
+      margin: 12,
+      filename: getFileBaseName() + '.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+    const wrapper = document.createElement('div');
+    wrapper.setAttribute('dir', 'rtl');
+    wrapper.style.fontFamily = "Arial, sans-serif";
+    wrapper.style.fontSize = "13px";
+    wrapper.style.lineHeight = "1.8";
+
+    const titleEl = document.createElement('h1');
+    titleEl.textContent = docTitle;
+    titleEl.style.fontSize = "20px";
+    titleEl.style.marginBottom = "2px";
+    wrapper.appendChild(titleEl);
+
+    if (ageGroup) {
+      const subEl = document.createElement('div');
+      subEl.textContent = "שכבת גיל: " + ageGroup;
+      subEl.style.fontSize = "13px";
+      subEl.style.color = "#55584c";
+      subEl.style.marginBottom = "14px";
+      wrapper.appendChild(subEl);
+    }
+
+    const bodyEl = document.createElement('div');
+    bodyEl.style.whiteSpace = "pre-wrap";
+    bodyEl.textContent = resultOutput.textContent;
+    wrapper.appendChild(bodyEl);
+
+    html2pdf().set(opt).from(wrapper).save();
+  });
+
+  document.getElementById('exportWordBtn').addEventListener('click', () => {
+    const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } = docx;
+    const docTitle = resultSection.dataset.docTitle || "דביר קדוש";
+    const ageGroup = resultSection.dataset.ageGroup;
+
+    const bodyParagraphs = resultOutput.textContent.split('\n').map(line => new Paragraph({
+      alignment: AlignmentType.RIGHT,
+      bidirectional: true,
+      spacing: { after: 160 },
+      children: [ new TextRun({ text: line || " ", font: "David", size: 24, rightToLeft: true }) ]
+    }));
+
+    const children = [
+      new Paragraph({
+        alignment: AlignmentType.RIGHT,
+        bidirectional: true,
+        heading: HeadingLevel.HEADING_1,
+        spacing: { after: 80 },
+        children: [ new TextRun({ text: docTitle, bold: true, font: "David", size: 36, rightToLeft: true }) ]
+      })
+    ];
+
+    if (ageGroup) {
+      children.push(new Paragraph({
+        alignment: AlignmentType.RIGHT,
+        bidirectional: true,
+        spacing: { after: 240 },
+        children: [ new TextRun({ text: "שכבת גיל: " + ageGroup, italics: true, font: "David", size: 22, rightToLeft: true }) ]
+      }));
+    }
+
+    children.push(...bodyParagraphs);
+
+    const doc = new Document({
+      sections: [{ children }]
+    });
+
+    Packer.toBlob(doc).then(blob => {
+      saveAs(blob, getFileBaseName() + '.docx');
+    }).catch(err => {
+      statusLine.textContent = "שגיאה בייצוא ל-Word: " + err.message;
+      statusLine.classList.add('error');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
