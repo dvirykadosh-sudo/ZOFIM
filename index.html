@@ -3,150 +3,333 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>מחולל פעולות - צופים</title>
+<title>מחולל פעולות דביר קדוש - שבט מעוז</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 <style>
   :root{
-    --khaki: #c3b091; --khaki-dark: #a08c66; --green-deep: #35452e;
-    --green-mid: #4f6b3d; --green-bright: #6f9450; --cream: #f6f3ea;
-    --paper: #fffdf8; --ink: #2a2a22; --ink-soft: #55584c;
-    --border: #d8cfb8; --danger: #a5432f;
+    --khaki: #c3b091;
+    --khaki-dark: #a08c66;
+    --green-deep: #35452e;
+    --green-mid: #4f6b3d;
+    --green-bright: #6f9450;
+    --cream: #f6f3ea;
+    --paper: #fffdf8;
+    --ink: #2a2a22;
+    --ink-soft: #55584c;
+    --border: #d8cfb8;
+    --danger: #a5432f;
   }
-  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
   body{
     font-family: 'Segoe UI', 'Heebo', Arial, sans-serif;
-    background: linear-gradient(180deg, var(--green-deep) 0%, var(--green-deep) 180px, var(--cream) 180px);
-    color: var(--ink); min-height: 100vh; padding-bottom: 60px;
+    background: linear-gradient(180deg, var(--green-deep) 0%, var(--green-deep) 150px, var(--cream) 150px);
+    color: var(--ink);
+    min-height: 100vh;
+    padding-bottom: 60px;
   }
+
   header.site-header{
-    max-width: 900px; margin: 0 auto; padding: 20px 20px 10px;
-    text-align: center; color: var(--cream);
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 26px 20px 8px;
+    text-align: center;
+    color: var(--cream);
   }
   header.site-header .badge{
-    display:inline-block; width: 40px; height: 40px; border-radius: 50%;
-    background: var(--khaki); border: 2px solid var(--cream); margin-bottom: 5px; position: relative;
+    display:inline-block;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--khaki);
+    border: 3px solid var(--cream);
+    margin-bottom: 8px;
+    position: relative;
   }
   header.site-header .badge::after{
-    content: "צ"; position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
-    font-weight:700; color: var(--green-deep); font-size:18px;
+    content: "צ";
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700; color: var(--green-deep); font-size:19px;
   }
-  header.site-header h1{ margin: 0 0 4px; font-size: 1.8rem; letter-spacing: 0.5px; }
-  header.site-header p{ margin: 0; color: var(--khaki); font-size: 0.9rem; font-weight: bold; }
+  header.site-header h1{
+    margin: 0 0 4px;
+    font-size: 1.45rem;
+    letter-spacing: 0.5px;
+  }
+  header.site-header p{
+    margin: 0;
+    color: var(--khaki);
+    font-size: 0.88rem;
+  }
 
-  /* Navigation Tabs */
-  .top-nav {
-    max-width: 900px; margin: 15px auto 25px; display: flex; justify-content: center; gap: 10px;
-    background: rgba(255,255,255,0.1); padding: 8px; border-radius: 30px; backdrop-filter: blur(5px);
+  .top-nav{
+    max-width: 900px;
+    margin: 16px auto 20px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.12);
+    padding: 6px;
+    border-radius: 30px;
   }
-  .nav-btn {
-    background: transparent; color: var(--cream); border: none; padding: 10px 20px;
-    border-radius: 20px; font-weight: bold; font-size: 1rem; cursor: pointer; transition: all 0.2s;
+  .nav-btn{
+    background: transparent;
+    color: var(--cream);
+    border: none;
+    padding: 9px 18px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.92rem;
+    cursor: pointer;
+    font-family: inherit;
   }
-  .nav-btn:hover { background: rgba(255,255,255,0.2); }
-  .nav-btn.active { background: var(--khaki); color: var(--green-deep); }
+  .nav-btn:hover{ background: rgba(255,255,255,0.18); }
+  .nav-btn.active{ background: var(--khaki); color: var(--green-deep); }
 
-  .view-section { display: none; max-width: 900px; margin: 0 auto; padding: 0 16px; }
-  .view-section.active { display: block; }
+  .view-section{
+    display: none;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+  .view-section.active{ display: block; }
 
   .card{
-    background: var(--paper); border: 1px solid var(--border); border-radius: 10px;
-    padding: 22px; margin-bottom: 18px; box-shadow: 0 2px 0 var(--border);
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 0 var(--border);
   }
   .card h2{
-    margin: 0 0 14px; font-size: 1.05rem; color: var(--green-deep);
-    border-bottom: 2px solid var(--khaki); padding-bottom: 8px; display:flex; align-items:center; gap:8px;
+    margin: 0 0 14px;
+    font-size: 1.05rem;
+    color: var(--green-deep);
+    border-bottom: 2px solid var(--khaki);
+    padding-bottom: 8px;
+    display:flex;
+    align-items:center;
+    gap:8px;
   }
   .card h2 .num{
-    background: var(--green-mid); color: var(--cream); width: 24px; height: 24px;
-    border-radius: 6px; display:flex; align-items:center; justify-content:center; font-size: 0.85rem;
+    background: var(--green-mid);
+    color: var(--cream);
+    width: 26px; height: 26px;
+    border-radius: 6px;
+    display:flex; align-items:center; justify-content:center;
+    font-size: 0.85rem;
+    flex-shrink: 0;
   }
 
-  label{ display:block; font-size: 0.88rem; color: var(--ink-soft); margin-bottom: 6px; font-weight: 600; }
-  input[type="text"], input[type="number"], textarea, select{
-    width: 100%; padding: 10px 12px; border: 1px solid var(--border);
-    border-radius: 7px; font-size: 0.95rem; font-family: inherit; background: #fff; color: var(--ink);
+  label{
+    display:block;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+    font-weight: 600;
   }
-  input:focus, textarea:focus, select:focus{ outline: none; border-color: var(--green-mid); box-shadow: 0 0 0 3px rgba(111,148,80,0.18); }
-  textarea{ resize: vertical; min-height: 110px; }
+  input[type="text"], input[type="number"], textarea, select{
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    background: #fff;
+    color: var(--ink);
+  }
+  input:focus, textarea:focus, select:focus{
+    outline: none;
+    border-color: var(--green-mid);
+    box-shadow: 0 0 0 3px rgba(111,148,80,0.18);
+  }
+  textarea{ resize: vertical; min-height: 100px; }
 
   .field{ margin-bottom: 16px; }
+  .field:last-child{ margin-bottom: 0; }
+  .hint{
+    font-size: 0.76rem;
+    color: var(--ink-soft);
+    margin-top: 5px;
+    font-weight: 400;
+  }
+
   .row2{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   .row3{ display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
   @media (max-width: 700px){ .row3{ grid-template-columns: 1fr 1fr; } }
   @media (max-width: 480px){ .row3, .row2{ grid-template-columns: 1fr; } }
 
-  .file-drop{ border: 2px dashed var(--khaki-dark); border-radius: 8px; padding: 18px; text-align: center; background: var(--cream); cursor: pointer; }
+  .file-drop{
+    border: 2px dashed var(--khaki-dark);
+    border-radius: 8px;
+    padding: 18px;
+    text-align: center;
+    background: var(--cream);
+    cursor: pointer;
+  }
+  .file-drop:hover{ background: #efe9d8; }
   .file-drop input{ display:none; }
-  .or-sep{ display:flex; align-items:center; gap:10px; margin: 14px 0; color: var(--ink-soft); font-size: 0.82rem; }
+  .file-drop .fname{
+    margin-top: 8px;
+    font-size: 0.85rem;
+    color: var(--green-deep);
+    font-weight: 600;
+  }
+  .or-sep{
+    display:flex; align-items:center; gap:10px;
+    margin: 14px 0;
+    color: var(--ink-soft);
+    font-size: 0.82rem;
+  }
   .or-sep::before, .or-sep::after{ content:""; flex:1; height:1px; background: var(--border); }
 
   .methods-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
   @media (max-width: 480px){ .methods-grid{ grid-template-columns: 1fr; } }
-  .method-item{ display:flex; align-items:center; gap:9px; padding: 9px 12px; border: 1px solid var(--border); border-radius: 7px; background: #fff; cursor:pointer; font-size: 0.9rem; }
+  .method-item{
+    display:flex; align-items:center; gap:9px;
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: #fff;
+    cursor:pointer;
+    font-size: 0.9rem;
+  }
   .method-item:has(input:checked){ background: #eef4e6; border-color: var(--green-mid); }
   .method-item input{ accent-color: var(--green-mid); width: 17px; height: 17px; flex-shrink:0; }
 
   .generate-btn{
-    display:block; width: 100%; padding: 15px; font-size: 1.05rem; font-weight: 700;
-    color: var(--cream); background: var(--green-mid); border: none; border-radius: 9px; cursor: pointer;
+    display:block;
+    width: 100%;
+    padding: 15px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--cream);
+    background: var(--green-mid);
+    border: none;
+    border-radius: 9px;
+    cursor: pointer;
   }
   .generate-btn:hover{ background: var(--green-deep); }
   .generate-btn:disabled{ background: #9aa591; cursor: not-allowed; }
-  
-  .idea-card { padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: #fff; cursor: pointer; margin-bottom: 8px; }
-  .idea-card:hover { background: #eef4e6; border-color: var(--green-mid); }
 
-  .status-line{ text-align:center; margin-top: 10px; font-size: 0.85rem; color: var(--ink-soft); min-height: 18px; }
+  .idea-card{
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #fff;
+    cursor: pointer;
+    margin-bottom: 8px;
+  }
+  .idea-card:hover{ background: #eef4e6; border-color: var(--green-mid); }
+  .idea-card strong{ color: var(--green-deep); }
+
+  .status-line{
+    text-align:center;
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    min-height: 18px;
+  }
   .status-line.error{ color: var(--danger); font-weight:600; }
 
-  #resultSection{ display:none; margin-top: 18px; }
-  .result-toolbar{ display:flex; gap:10px; margin-bottom: 14px; flex-wrap: wrap; }
-  .result-toolbar button{ flex:1; min-width: 120px; padding: 10px; border-radius: 7px; border: 1px solid var(--green-mid); background: #fff; color: var(--green-deep); font-weight: 700; cursor: pointer; }
+  #resultSection{ display:none; margin-top: 4px; }
+
+  .result-toolbar{ display:flex; gap:8px; margin-bottom: 14px; flex-wrap: wrap; }
+  .result-toolbar button{
+    flex:1;
+    min-width: 120px;
+    padding: 10px 10px;
+    border-radius: 7px;
+    border: 1px solid var(--green-mid);
+    background: #fff;
+    color: var(--green-deep);
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 0.86rem;
+    font-family: inherit;
+  }
   .result-toolbar button:hover{ background: #eef4e6; }
   .result-toolbar button.primary{ background: var(--khaki-dark); color: #fff; border-color: var(--khaki-dark); }
+  .result-toolbar button.primary:hover{ background: #8f7c53; }
   .result-toolbar button.whatsapp-btn{ background: #25D366; color: #fff; border-color: #25D366; }
   .result-toolbar button.live-btn{ background: var(--green-deep); color: #fff; border-color: var(--green-deep); }
 
-  #resultOutput{ background: #fffefb; border: 1px solid var(--border); border-radius: 8px; padding: 24px; white-space: pre-wrap; line-height: 1.75; font-size: 0.98rem; min-height: 200px; }
-  
-  /* Library Styles */
-  .library-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-  @media (max-width: 600px){ .library-grid { grid-template-columns: 1fr; } }
-  .lib-card { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 15px; position: relative; }
-  .lib-card h3 { margin: 0 0 5px; color: var(--green-deep); font-size: 1.1rem; }
-  .lib-card p { margin: 0 0 10px; font-size: 0.85rem; color: var(--ink-soft); }
-  .lib-card .lib-actions { display: flex; gap: 8px; }
-  .lib-card button { padding: 6px 12px; border-radius: 5px; border: none; font-size: 0.85rem; font-weight: bold; cursor: pointer; background: var(--khaki); color: var(--green-deep); }
-  
-  /* Live Mode CSS */
-  body.live-mode { background: #fffdf8; padding: 0; }
-  body.live-mode header, body.live-mode .top-nav, body.live-mode .card:not(#resultSection) { display: none !important; }
-  body.live-mode #resultSection { position: fixed; inset: 0; z-index: 9999; margin: 0; border: none; border-radius: 0; padding: 20px 20px 80px; overflow-y: auto; background: #fffdf8; }
-  body.live-mode #resultOutput { border: none; background: transparent; font-size: 1.3rem; line-height: 1.9; padding: 0; }
-  body.live-mode .result-toolbar { display: none; }
-  #closeLiveBtn { display: none; }
-  body.live-mode #closeLiveBtn { display: block; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--danger); color: white; border: none; padding: 15px 30px; border-radius: 30px; font-size: 1.1rem; font-weight: bold; cursor: pointer; z-index: 10000; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-
-  /* Print CSS */
-  @media print {
-    body { background: #fff; padding: 0; }
-    header, .top-nav, .card:not(#resultSection), .result-toolbar, #getIdeasBtn, #ideasContainer, #closeLiveBtn { display: none !important; }
-    #resultSection { border: none; box-shadow: none; margin: 0; padding: 0; display: block !important; }
-    #resultOutput { border: none; font-size: 12pt; padding: 0; background: transparent; }
+  #resultOutput{
+    background: #fffefb;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    white-space: pre-wrap;
+    line-height: 1.75;
+    font-size: 0.98rem;
+    min-height: 200px;
   }
-  .spinner{ display:inline-block; width: 16px; height:16px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-left: 8px; }
+
+  .spinner{
+    display:inline-block;
+    width: 16px; height:16px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
   @keyframes spin{ to{ transform: rotate(360deg); } }
+
+  /* Library */
+  .library-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 600px){ .library-grid{ grid-template-columns: 1fr; } }
+  .lib-card{ background:#fff; border:1px solid var(--border); border-radius:8px; padding:15px; }
+  .lib-card h3{ margin:0 0 5px; color: var(--green-deep); font-size:1.05rem; }
+  .lib-card p{ margin:0 0 10px; font-size:0.85rem; color: var(--ink-soft); }
+  .lib-card button{
+    padding: 6px 12px; border-radius: 5px; border: none;
+    font-size: 0.85rem; font-weight: bold; cursor: pointer;
+    background: var(--khaki); color: var(--green-deep);
+    font-family: inherit;
+  }
+  .lib-empty{ color: var(--ink-soft); font-size: 0.9rem; text-align:center; padding: 20px 0; }
+
+  /* Live mode */
+  body.live-mode{ background: #fffdf8; padding: 0; }
+  body.live-mode header.site-header, body.live-mode .top-nav{ display:none !important; }
+  body.live-mode .view-section > .card:not(#resultSection){ display:none !important; }
+  body.live-mode #resultSection{
+    position: fixed; inset: 0; z-index: 9999; margin: 0;
+    border: none; border-radius: 0; padding: 20px 20px 90px;
+    overflow-y: auto; background: #fffdf8;
+  }
+  body.live-mode #resultOutput{ border:none; background:transparent; font-size: 1.3rem; line-height: 1.9; padding: 0; }
+  body.live-mode .result-toolbar{ display:none; }
+  #closeLiveBtn{ display:none; }
+  body.live-mode #closeLiveBtn{
+    display:block; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: var(--danger); color: #fff; border:none; padding: 14px 28px;
+    border-radius: 30px; font-size: 1rem; font-weight: 700; cursor: pointer;
+    z-index: 10000; box-shadow: 0 4px 10px rgba(0,0,0,0.2); font-family: inherit;
+  }
+
+  @media print{
+    body{ background:#fff; padding:0; }
+    header.site-header, .top-nav, .view-section > .card:not(#resultSection), .result-toolbar{ display:none !important; }
+    #resultSection{ display:block !important; border:none; box-shadow:none; margin:0; padding:0; }
+    #resultOutput{ border:none; font-size:12pt; padding:0; background:transparent; }
+  }
+
+  footer{ text-align:center; color: var(--ink-soft); font-size: 0.78rem; margin-top: 24px; }
 </style>
 </head>
 <body>
 
 <header class="site-header">
   <div class="badge"></div>
-  <h1>מחולל פעולות - צופים</h1>
-  <p>נוצר על ידי דביר קדוש</p>
+  <h1>מחולל פעולות דביר קדוש - שבט מעוז</h1>
+  <p>יוצר פעולות צופים חדשות בסגנון שלכם, ללא צורך במפתח API</p>
 </header>
 
 <nav class="top-nav">
@@ -156,54 +339,82 @@
 </nav>
 
 <!-- מסך 1: יצירת פעולה -->
-<main id="view-create" class="view-section active">
+<section id="view-create" class="view-section active">
+
   <div class="card">
     <h2><span class="num">1</span> פרטי הפעולה</h2>
     <div class="row3">
-      <div class="field"><label>נושא / ערך מרכזי</label><input type="text" id="topicInput" placeholder="לדוגמה: אחריות אישית"></div>
-      <div class="field"><label>סוג הפעולה</label>
-        <select id="activityTypeInput">
-          <option>פעולת תוכן</option><option>פעולת נושא</option><option>פעולת משחק</option>
-          <option>פעולה חברתית / גיבוש</option><option>פעולת שטח / טיול</option>
-        </select>
+      <div class="field">
+        <label for="nameInput">שם הפעולה</label>
+        <input type="text" id="nameInput" placeholder="לדוגמה: המסע אל עצמי">
       </div>
-      <div class="field"><label>שכבת גיל</label>
+      <div class="field">
+        <label for="topicInput">נושא / ערך מרכזי</label>
+        <input type="text" id="topicInput" placeholder="לדוגמה: אחריות אישית">
+      </div>
+      <div class="field">
+        <label for="ageGroupInput">שכבת גיל (כיתה)</label>
         <select id="ageGroupInput">
-          <option>כיתה ד'</option><option selected>כיתה ה'</option><option>כיתה ו'</option>
-          <option>כיתה ז'</option><option>כיתה ח'</option><option>כיתה ט'</option>
+          <option value="ד">כיתה ד'</option>
+          <option value="ה" selected>כיתה ה'</option>
+          <option value="ו">כיתה ו'</option>
+          <option value="ז">כיתה ז'</option>
+          <option value="ח">כיתה ח'</option>
+          <option value="ט">כיתה ט'</option>
         </select>
       </div>
     </div>
     <div class="row3" style="margin-top:16px;">
-      <div class="field"><label>שם המדריך / מדריכה</label><input type="text" id="guideNameInput" placeholder="לדוגמה: דביר"></div>
-      <div class="field"><label>זמן כולל בדקות</label><input type="number" id="durationInput" placeholder="לדוגמה: 60" min="5" step="5"></div>
-      <div class="field"><label>שם הפעולה</label><input type="text" id="nameInput" placeholder="יושלם אוטומטית אם תבחרו רעיון"></div>
+      <div class="field">
+        <label for="guideNameInput">שם המדריך / מדריכה</label>
+        <input type="text" id="guideNameInput" placeholder="לדוגמה: דביר">
+      </div>
+      <div class="field">
+        <label for="durationInput">זמן כולל בדקות</label>
+        <input type="number" id="durationInput" placeholder="לדוגמה: 60" min="5" step="5">
+      </div>
+      <div class="field">
+        <label for="activityTypeInput">סוג הפעולה</label>
+        <select id="activityTypeInput">
+          <option value="פעולת תוכן">פעולת תוכן</option>
+          <option value="פעולת נושא">פעולת נושא</option>
+          <option value="פעולת משחק">פעולת משחק</option>
+          <option value="פעולת תחקור">פעולת תחקור</option>
+          <option value="פעולה חברתית / גיבוש">פעולה חברתית / גיבוש</option>
+          <option value="פעולת שטח / טיול">פעולת שטח / טיול</option>
+          <option value="פעולת פתיחה / סיום עונה">פעולת פתיחה / סיום עונה</option>
+          <option value="פעולת יוזמה / פרויקט">פעולת יוזמה / פרויקט</option>
+        </select>
+      </div>
     </div>
+    <div class="hint" style="margin-top:12px;">רמת השפה, מורכבות הדיונים וטווח הקשב של כל חלק מותאמים אוטומטית לכיתה שנבחרה.</div>
   </div>
 
   <div class="card" style="background:#f9f6ef; border-color:var(--khaki-dark);">
     <h2><span class="num">💡</span> נתקעתם בלי רעיון?</h2>
-    <button id="getIdeasBtn" class="generate-btn" style="background:var(--khaki-dark); padding:10px;">הצע לי 5 רעיונות לפעולה!</button>
-    <div id="ideasLoading" class="status-line" style="display:none; margin-top:10px;">מייצר רעיונות חכמים...<span class="spinner"></span></div>
-    <div id="ideasContainer" style="margin-top:15px; display:flex; flex-direction:column;"></div>
+    <button id="getIdeasBtn" class="generate-btn" style="background:var(--khaki-dark); padding:11px;">הצע לי 5 רעיונות לפעולה בנושא שכתבתי למעלה</button>
+    <div id="ideasLoading" class="status-line" style="display:none;">מייצר רעיונות...<span class="spinner"></span></div>
+    <div id="ideasContainer" style="margin-top:14px;"></div>
   </div>
 
   <div class="card">
     <h2><span class="num">2</span> מודל לחיקוי</h2>
+    <label>העלאת קובץ פעולה קיים (Word / טקסט)</label>
     <div class="file-drop" id="fileDropArea">
       <input type="file" id="modelFileInput" accept=".txt,.docx,.doc">
-      <div>לחצו כאן להעלאת קובץ קודם (Word/טקסט) שישמש כמודל</div>
-      <div id="fileNameLabel" style="margin-top:8px; font-weight:bold; color:var(--green-deep);"></div>
+      <div>לחצו כאן לבחירת קובץ, או גררו אותו לכאן</div>
+      <div class="fname" id="fileNameLabel"></div>
     </div>
     <div class="or-sep">או</div>
     <div class="field">
-      <label>הדביקו כאן טקסט של פעולה קיימת</label>
-      <textarea id="modelTextInput" placeholder="פעולה לדוגמה..."></textarea>
+      <label for="modelTextInput">הדביקו כאן טקסט של פעולה קיימת (גיבוי אם אין קובץ)</label>
+      <textarea id="modelTextInput" placeholder="הדביקו כאן את הפעולה שתשמש כמודל לסגנון, למבנה ולניסוח..."></textarea>
     </div>
   </div>
 
   <div class="card">
     <h2><span class="num">3</span> בחירת מתודות</h2>
+    <label>סמנו את המתודות שה-AI רשאי לשלב בפעולה</label>
     <div class="methods-grid" id="methodsGrid">
       <label class="method-item"><input type="checkbox" value="הבעה יצירתית"> הבעה יצירתית</label>
       <label class="method-item"><input type="checkbox" value="ייצוג"> ייצוג</label>
@@ -236,44 +447,50 @@
     <div id="resultOutput"></div>
     <button id="closeLiveBtn">סגור מצב הדרכה</button>
   </div>
-</main>
+
+</section>
 
 <!-- מסך 2: מאגר שבטי -->
-<main id="view-library" class="view-section">
+<section id="view-library" class="view-section">
   <div class="card">
     <h2><span class="num">📚</span> ספריית הפעולות של השבט</h2>
-    <p style="font-size:0.9rem; color:var(--ink-soft); margin-bottom: 20px;">
-      כאן נשמרות כל הפעולות שנוצרו במערכת, בתוספת פעולות קלאסיות של השבט שכבר הוזנו מראש.
+    <p style="font-size:0.9rem; color:var(--ink-soft); margin-bottom: 18px;">
+      כל פעולה שיוצרים ותוצג כאן, נשמרת אוטומטית במאגר (בדפדפן הזה בלבד).
     </p>
     <div class="field"><input type="text" id="libSearch" placeholder="חיפוש לפי שם או נושא..."></div>
     <div class="library-grid" id="libraryGrid"></div>
   </div>
-</main>
+</section>
 
 <!-- מסך 3: תחקור פעולה -->
-<main id="view-reflect" class="view-section">
+<section id="view-reflect" class="view-section">
   <div class="card">
     <h2><span class="num">🎯</span> תחקור אישי - הפקת לקחים</h2>
     <div class="field">
-      <label>בחר פעולה לתחקור מתוך המאגר:</label>
-      <select id="reflectActivitySelect"><option>בחר פעולה...</option></select>
+      <label for="reflectActivitySelect">בחר פעולה לתחקור מתוך המאגר</label>
+      <select id="reflectActivitySelect"><option value="">בחר פעולה...</option></select>
     </div>
     <div class="field">
-      <label>מה עבד מעולה?</label>
+      <label for="reflectGood">מה עבד מעולה?</label>
       <textarea id="reflectGood" placeholder="לדוגמה: משחק הפתיחה הכניס אותם לאווירה..."></textarea>
     </div>
     <div class="field">
-      <label>מה פחות עבד / דורש שיפור?</label>
-      <textarea id="reflectBad" placeholder="לדוגמה: החניכים לא שיתפו פעולה עם משחק ההדמייה, כדאי לקצר אותו פעם הבאה..."></textarea>
+      <label for="reflectBad">מה פחות עבד / דורש שיפור?</label>
+      <textarea id="reflectBad" placeholder="לדוגמה: הדיון היה ארוך מדי לגיל הזה, כדאי לקצר בפעם הבאה..."></textarea>
     </div>
     <button class="generate-btn" id="saveReflectBtn" style="background:var(--khaki-dark);">שמור תחקור</button>
     <div id="reflectStatus" class="status-line"></div>
   </div>
-</main>
+</section>
+
+<footer>שבט מעוז &middot; כלי פנימי למדריכים</footer>
 
 <script>
 (function(){
-  // --- Navigation ---
+
+  /* ---------------------------------------------------------
+     ניווט בין מסכים
+  --------------------------------------------------------- */
   const navBtns = document.querySelectorAll('.nav-btn');
   const sections = document.querySelectorAll('.view-section');
   navBtns.forEach(btn => {
@@ -282,203 +499,447 @@
       sections.forEach(s => s.classList.remove('active'));
       btn.classList.add('active');
       document.getElementById(btn.dataset.target).classList.add('active');
-      if(btn.dataset.target === 'view-library') renderLibrary();
-      if(btn.dataset.target === 'view-reflect') populateReflectSelect();
+      if (btn.dataset.target === 'view-library') renderLibrary();
+      if (btn.dataset.target === 'view-reflect') populateReflectSelect();
     });
   });
 
-  // --- Tribal Library (Cloud Mock) ---
-  const defaultLibrary = [
-    { id: "seed1", title: "פעולת שיא - קדוש", topic: "תחרות וגיבוש", text: "פעולת שיא מטורפת הכוללת משחק שוער עיוור עם כדור ספוג, משימות צבעים ופירמידת נעליים. סגירה עם ממתקים ומסר על רוח ספורטיבית." },
-    { id: "seed2", title: "אלימות בקרב בני נוער (דביר)", topic: "אלימות חברתית", text: "דיון פתוח על בריונות ואלימות. המטרה לחנך ש'הצופה רע לכל אדם' אומר שאנחנו לא עומדים מהצד. כולל הצגת סרטון המחשה ודיון על חרמות בוואטסאפ." },
-    { id: "seed3", title: "תחבורה ציבורית בשבת (ליאור/דביר)", topic: "סטטוס קוו", text: "פעולה הדנה בסטטוס קוו בישראל, האם תחבורה בשבת פוגעת בצביון או עוזרת לנוער שאין לו רכב. שיח מכבד בין חילונים לדתיים." },
-    { id: "seed4", title: "ממונהג למנהיג (קדוש)", topic: "מנהיגות בוגרת", text: "פעולת נעורים שמתחילה במשחק מכרז ערכים (לקנות חברות אמת, אומץ, כסף) וממשיכה לדיון על בזבוז אנרגיה על דברים חיצוניים במקום על העתיד של השבט." }
-  ];
-
-  function getLibrary() {
-    let lib = JSON.parse(localStorage.getItem('scout_library'));
-    if(!lib || lib.length === 0) { lib = defaultLibrary; localStorage.setItem('scout_library', JSON.stringify(lib)); }
-    return lib;
+  /* ---------------------------------------------------------
+     מאגר שבטי (נשמר ב-localStorage של הדפדפן)
+  --------------------------------------------------------- */
+  function getLibrary(){
+    try{
+      return JSON.parse(localStorage.getItem('scout_library') || '[]');
+    }catch(e){ return []; }
   }
-  function saveToLibrary(title, topic, text) {
-    const lib = getLibrary();
-    const newEntry = { id: Date.now().toString(), title, topic, text, reflection: null };
-    lib.unshift(newEntry);
+  function setLibrary(lib){
     localStorage.setItem('scout_library', JSON.stringify(lib));
   }
+  function saveToLibrary(title, topic, text){
+    const lib = getLibrary();
+    lib.unshift({ id: Date.now().toString(), title, topic, text, reflection: null });
+    setLibrary(lib);
+  }
 
-  function renderLibrary() {
+  function renderLibrary(){
     const grid = document.getElementById('libraryGrid');
     const searchTerm = document.getElementById('libSearch').value.toLowerCase();
     const lib = getLibrary();
     grid.innerHTML = '';
-    lib.filter(item => item.title.toLowerCase().includes(searchTerm) || item.topic.toLowerCase().includes(searchTerm))
-       .forEach(item => {
-         const card = document.createElement('div'); card.className = 'lib-card';
-         card.innerHTML = `<h3>${item.title}</h3><p>נושא: ${item.topic}</p>
-                           ${item.reflection ? `<p style="color:var(--green-mid); font-size:0.8rem; font-weight:bold;">✓ תוחקר</p>` : ''}
-                           <div class="lib-actions"><button onclick="viewFromLibrary('${item.id}')">צפה בפעולה</button></div>`;
-         grid.appendChild(card);
-       });
+    const filtered = lib.filter(item =>
+      item.title.toLowerCase().includes(searchTerm) || item.topic.toLowerCase().includes(searchTerm)
+    );
+    if (filtered.length === 0){
+      grid.innerHTML = '<div class="lib-empty">עדיין אין פעולות שמורות במאגר. פעולות שתיצרו יופיעו כאן אוטומטית.</div>';
+      return;
+    }
+    filtered.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'lib-card';
+      card.innerHTML =
+        '<h3>' + item.title + '</h3>' +
+        '<p>נושא: ' + item.topic + '</p>' +
+        (item.reflection ? '<p style="color:var(--green-mid); font-size:0.8rem; font-weight:bold;">✓ תוחקר</p>' : '') +
+        '<button data-id="' + item.id + '" class="view-lib-btn">צפה בפעולה</button>';
+      grid.appendChild(card);
+    });
+    grid.querySelectorAll('.view-lib-btn').forEach(btn => {
+      btn.addEventListener('click', () => viewFromLibrary(btn.dataset.id));
+    });
   }
   document.getElementById('libSearch').addEventListener('input', renderLibrary);
 
-  window.viewFromLibrary = function(id) {
+  function viewFromLibrary(id){
     const item = getLibrary().find(i => i.id === id);
-    if(!item) return;
-    document.getElementById('resultOutput').innerText = item.text;
-    document.getElementById('resultMeta').innerHTML = `<div style="font-size:1.15rem; font-weight:700; color:var(--green-deep);">${item.title}</div>`;
-    document.getElementById('resultSection').dataset.docTitle = item.title;
-    document.getElementById('resultSection').style.display = 'block';
-    
-    // Switch to create tab to view it
-    navBtns[0].click(); 
-    document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
-  };
+    if (!item) return;
+    resultOutput.textContent = item.text;
+    resultSection.dataset.docTitle = item.title;
+    document.getElementById('resultMeta').innerHTML =
+      '<div style="font-size:1.15rem; font-weight:700; color:var(--green-deep);">' + item.title + '</div>';
+    resultSection.style.display = 'block';
+    navBtns[0].click();
+    resultSection.scrollIntoView({ behavior: 'smooth' });
+  }
 
-  // --- Reflection Logic ---
-  function populateReflectSelect() {
+  /* ---------------------------------------------------------
+     תחקור פעולה
+  --------------------------------------------------------- */
+  function populateReflectSelect(){
     const sel = document.getElementById('reflectActivitySelect');
     sel.innerHTML = '<option value="">בחר פעולה מהמאגר...</option>';
-    getLibrary().forEach(item => { sel.innerHTML += `<option value="${item.id}">${item.title}</option>`; });
+    getLibrary().forEach(item => {
+      const opt = document.createElement('option');
+      opt.value = item.id;
+      opt.textContent = item.title;
+      sel.appendChild(opt);
+    });
   }
   document.getElementById('reflectActivitySelect').addEventListener('change', (e) => {
     const item = getLibrary().find(i => i.id === e.target.value);
-    document.getElementById('reflectGood').value = item?.reflection?.good || '';
-    document.getElementById('reflectBad').value = item?.reflection?.bad || '';
+    document.getElementById('reflectGood').value = (item && item.reflection && item.reflection.good) || '';
+    document.getElementById('reflectBad').value = (item && item.reflection && item.reflection.bad) || '';
   });
   document.getElementById('saveReflectBtn').addEventListener('click', () => {
     const id = document.getElementById('reflectActivitySelect').value;
-    if(!id) return alert("יש לבחור פעולה קודם.");
-    const lib = getLibrary(); const index = lib.findIndex(i => i.id === id);
-    if(index > -1) {
-      lib[index].reflection = { good: document.getElementById('reflectGood').value, bad: document.getElementById('reflectBad').value };
-      localStorage.setItem('scout_library', JSON.stringify(lib));
-      document.getElementById('reflectStatus').innerText = "התחקור נשמר בהצלחה במאגר!";
-      setTimeout(() => document.getElementById('reflectStatus').innerText = "", 3000);
+    const reflectStatus = document.getElementById('reflectStatus');
+    if (!id){
+      reflectStatus.textContent = "יש לבחור פעולה קודם.";
+      reflectStatus.classList.add('error');
+      return;
+    }
+    const lib = getLibrary();
+    const index = lib.findIndex(i => i.id === id);
+    if (index > -1){
+      lib[index].reflection = {
+        good: document.getElementById('reflectGood').value,
+        bad: document.getElementById('reflectBad').value
+      };
+      setLibrary(lib);
+      reflectStatus.classList.remove('error');
+      reflectStatus.textContent = "התחקור נשמר בהצלחה במאגר!";
+      setTimeout(() => { reflectStatus.textContent = ""; }, 3000);
     }
   });
 
-  // --- File Upload & Inputs ---
+  /* ---------------------------------------------------------
+     העלאת קובץ מודל לחיקוי
+  --------------------------------------------------------- */
   const fileInput = document.getElementById('modelFileInput');
   const fileDropArea = document.getElementById('fileDropArea');
+  const fileNameLabel = document.getElementById('fileNameLabel');
+  const modelTextInput = document.getElementById('modelTextInput');
   let uploadedModelText = "";
+
   fileDropArea.addEventListener('click', () => fileInput.click());
+  fileDropArea.addEventListener('dragover', (e) => e.preventDefault());
+  fileDropArea.addEventListener('drop', (e) => {
+    e.preventDefault();
+    if (e.dataTransfer.files.length){
+      fileInput.files = e.dataTransfer.files;
+      handleFile(e.dataTransfer.files[0]);
+    }
+  });
   fileInput.addEventListener('change', () => {
-    const file = fileInput.files[0]; if(!file) return;
-    document.getElementById('fileNameLabel').innerText = "נבחר: " + file.name;
-    if (file.name.endsWith('.docx')) {
-      const reader = new FileReader(); reader.onload = (e) => mammoth.extractRawText({arrayBuffer: e.target.result}).then(res => uploadedModelText = res.value);
+    if (fileInput.files.length) handleFile(fileInput.files[0]);
+  });
+
+  function handleFile(file){
+    fileNameLabel.textContent = "נבחר: " + file.name;
+    const name = file.name.toLowerCase();
+    if (name.endsWith('.docx')){
+      const reader = new FileReader();
+      reader.onload = function(e){
+        mammoth.extractRawText({ arrayBuffer: e.target.result })
+          .then(result => { uploadedModelText = result.value; })
+          .catch(err => {
+            statusLine.textContent = "שגיאה בקריאת קובץ ה-Word: " + err.message;
+            statusLine.classList.add('error');
+          });
+      };
       reader.readAsArrayBuffer(file);
     } else {
-      const reader = new FileReader(); reader.onload = (e) => uploadedModelText = e.target.result; reader.readAsText(file);
+      const reader = new FileReader();
+      reader.onload = function(e){ uploadedModelText = e.target.result; };
+      reader.readAsText(file);
+    }
+  }
+
+  function getSelectedMethods(){
+    return Array.from(document.querySelectorAll('#methodsGrid input[type="checkbox"]:checked'))
+      .map(cb => cb.value);
+  }
+
+  /* ---------------------------------------------------------
+     התאמת רמה לפי כיתה
+  --------------------------------------------------------- */
+  const gradeLabels = { "ד": "כיתה ד'", "ה": "כיתה ה'", "ו": "כיתה ו'", "ז": "כיתה ז'", "ח": "כיתה ח'", "ט": "כיתה ט'" };
+  const gradeGuidance = {
+    "ד": "שפה פשוטה ומשפטים קצרים, הרבה משחק ותנועה, טווח קשב קצר (כ-8-10 דקות למתודה), הימנעות מדיון מופשט ארוך.",
+    "ה": "שפה נגישה וברורה, שילוב משחק לצד תוכן קליל, יכולת ראשונית לדיון קצר בקבוצות קטנות.",
+    "ו": "איזון בין תוכן לפעילות חווייתית, יכולת לדיון מובנה ולשאלות פתוחות פשוטות יחסית.",
+    "ז": "חשיבה מופשטת מתפתחת, אפשר להעמיק מעט בדיון ערכי ולהשתמש בדוגמאות מהחיים האישיים שלהם.",
+    "ח": "יכולת דיון מעמיק יותר והתייחסות לדילמות מורכבות, פחות תלות במשחק ויותר בתוכן ובשיח.",
+    "ט": "חשיבה ביקורתית ומופשטת, יכולת לדיון פתוח בסוגיות ערכיות/חברתיות מורכבות, טווח קשב ארוך יחסית."
+  };
+
+  /* ---------------------------------------------------------
+     בניית הפרומפט
+  --------------------------------------------------------- */
+  function buildPrompt(name, topic, gradeKey, guideName, activityType, duration, modelText, methods){
+    const methodsList = methods.join('", "');
+    const gradeLabel = gradeLabels[gradeKey] || gradeKey;
+    const guidance = gradeGuidance[gradeKey] || "";
+    const docTitle = "דביר קדוש" + (name ? " - " + name : "");
+    return [
+      `אתה עוזר למדריך צופים בכתיבת פעולה חדשה לגמרי, בעברית.`,
+      ``,
+      `כותרת הפעולה (יש לפתוח איתה את המסמך בדיוק כפי שהיא): "${docTitle}"`,
+      `נושא / ערך מרכזי: "${topic}"`,
+      `שכבת גיל: "${gradeLabel}"`,
+      `הנחיית התאמה לגיל: ${guidance}`,
+      `סוג הפעולה: "${activityType}"`,
+      `שם המדריך/ה: "${guideName || "לא צוין"}"`,
+      `זמן כולל לפעולה: ${duration} דקות`,
+      ``,
+      `להלן פעולה קיימת שכתב המדריך, המשמשת כ"מודל לחיקוי" לסגנון הכתיבה, הטון, והמבנה הכללי (אך לא לתוכן עצמו):`,
+      `"""`,
+      modelText || "(לא סופק מודל - השתמש בסגנון פעולת צופים סטנדרטית, ברורה ומובנית)",
+      `"""`,
+      ``,
+      `מתודות מאושרות לשילוב (רשימה סגורה): "${methodsList}"`,
+      ``,
+      `חוקי ברזל שאין לחרוג מהם:`,
+      `1. פתח את המסמך בשורת הכותרת "${docTitle}", ומיד אחריה ציין את שכבת הגיל ואת סוג הפעולה.`,
+      `2. עליך להשתמש אך ורק במתודות שסומנו ברשימה שלעיל. אסור לשלב מתודה שאינה ברשימה.`,
+      `3. לכל מתודה בפעולה, חובה לרשום במפורש (א) מהי המתודה מתוך אלו שסומנו, ו-(ב) כמה זמן היא תיקח בדקות. סכום הזמנים של כל החלקים חייב להתקרב ככל האפשר לזמן הכולל שצוין.`,
+      `4. שמור בדיוק על מבנה הפעולה כפי שמופיע במודל שסופק, כולל: ציון זמן כולל בתחילת הפעולה, סבב שמות/פתיחה, חלוקה לחלקים ממוספרים, שילוב שאלות פתוחות או דיון במהלך הפעולה, וסעיף סגירה הכולל מסר של המדריך לחניכים.`,
+      `5. התאם את רמת השפה, אורך המשפטים ומורכבות התכנים לשכבת הגיל ולהנחיית ההתאמה שצוינו לעיל.`,
+      `6. התאם את מבנה הפעולה והאופי הכללי שלה לסוג הפעולה שנבחר.`,
+      `7. שמור על הסגנון, הטון, ורמת השפה שמופיעים במודל שסופק.`,
+      `8. אל תמציא מתודות, שמות סעיפים, או מבנים שאינם קיימים במודל ובחוקים לעיל.`,
+      ``,
+      `כתוב כעת את הפעולה החדשה במלואה, בעברית, בפורמט טקסט ברור עם כותרות לכל חלק.`
+    ].join('\n');
+  }
+
+  /* ---------------------------------------------------------
+     מחולל רעיונות
+  --------------------------------------------------------- */
+  document.getElementById('getIdeasBtn').addEventListener('click', async () => {
+    const topic = document.getElementById('topicInput').value.trim();
+    const ideasLoading = document.getElementById('ideasLoading');
+    const ideasContainer = document.getElementById('ideasContainer');
+    const getIdeasBtn = document.getElementById('getIdeasBtn');
+    if (!topic){
+      ideasContainer.innerHTML = '<div class="status-line error">נא למלא קודם נושא / ערך מרכזי למעלה.</div>';
+      return;
+    }
+    getIdeasBtn.disabled = true;
+    ideasLoading.style.display = 'block';
+    ideasContainer.innerHTML = '';
+    try{
+      const response = await fetch("https://text.pollinations.ai/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: [{
+            role: "user",
+            content: `הצע 5 רעיונות שונים לפעולת צופים בנושא "${topic}". החזר אך ורק מערך JSON תקני, בלי שום טקסט נוסף מסביב, בפורמט: [{"name":"שם קצר לפעולה","desc":"תקציר של משפט אחד"}]`
+          }]
+        })
+      });
+      if (!response.ok) throw new Error("שגיאת תקשורת");
+      let text = await response.text();
+      const match = text.match(/\[[\s\S]*\]/);
+      if (!match) throw new Error("לא התקבלה תשובה תקינה");
+      const ideas = JSON.parse(match[0]);
+      ideasContainer.innerHTML = '';
+      ideas.forEach(idea => {
+        const d = document.createElement('div');
+        d.className = 'idea-card';
+        d.innerHTML = '<strong>' + idea.name + '</strong><br><span style="font-size:0.88rem;">' + (idea.desc || '') + '</span>';
+        d.addEventListener('click', () => {
+          document.getElementById('nameInput').value = idea.name;
+        });
+        ideasContainer.appendChild(d);
+      });
+    }catch(e){
+      ideasContainer.innerHTML = '<div class="status-line error">לא הצלחנו לייצר רעיונות כרגע, נסו שוב.</div>';
+    }finally{
+      getIdeasBtn.disabled = false;
+      ideasLoading.style.display = 'none';
     }
   });
 
-  // --- Ideas Generator ---
-  document.getElementById('getIdeasBtn').addEventListener('click', async () => {
-    const topic = document.getElementById('topicInput').value.trim();
-    if (!topic) return alert("הזן נושא תחילה.");
-    document.getElementById('getIdeasBtn').disabled = true; document.getElementById('ideasLoading').style.display = 'block';
-    
-    try {
-      const response = await fetch("https://text.pollinations.ai/", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: [{ role: "user", content: `הצע 5 רעיונות לפעולת צופים בנושא "${topic}". חובה להחזיר רק מערך JSON: [{"name":"שם","desc":"תקציר","methods":["מתודה"]}]` }] })
-      });
-      let text = await response.text(); text = text.match(/\[[\s\S]*\]/)[0];
-      const ideas = JSON.parse(text);
-      const container = document.getElementById('ideasContainer'); container.innerHTML = '';
-      ideas.forEach((id, idx) => {
-        const d = document.createElement('div'); d.className = 'idea-card';
-        d.innerHTML = `<strong>${id.name}</strong><br><span style="font-size:0.9rem;">${id.desc}</span>`;
-        d.onclick = () => { document.getElementById('nameInput').value = id.name; alert("נבחר: " + id.name); };
-        container.appendChild(d);
-      });
-    } catch(e) {} finally { document.getElementById('getIdeasBtn').disabled = false; document.getElementById('ideasLoading').style.display = 'none'; }
-  });
-
-  // --- Generation Logic ---
+  /* ---------------------------------------------------------
+     יצירת הפעולה
+  --------------------------------------------------------- */
   const generateBtn = document.getElementById('generateBtn');
+  const statusLine = document.getElementById('statusLine');
+  const resultSection = document.getElementById('resultSection');
+  const resultOutput = document.getElementById('resultOutput');
+
   generateBtn.addEventListener('click', async () => {
-    const name = document.getElementById('nameInput').value.trim() || "פעולה חדשה";
+    statusLine.classList.remove('error');
+    const name = document.getElementById('nameInput').value.trim();
     const topic = document.getElementById('topicInput').value.trim();
-    const age = document.getElementById('ageGroupInput').value;
-    const guide = document.getElementById('guideNameInput').value.trim() || "מדריך";
-    const type = document.getElementById('activityTypeInput').value;
-    const time = document.getElementById('durationInput').value.trim();
-    const methods = Array.from(document.querySelectorAll('.method-item input:checked')).map(cb=>cb.value);
-    
-    if(!topic || !time || methods.length===0) return alert("חסרים פרטי חובה (נושא, זמן או מתודות).");
-    
-    const docTitle = `${name} - ${age} - ${guide}`;
-    const prompt = `אתה מדריך צופים כותב פעולה. כותרת: "${docTitle}". נושא: "${topic}". זמן: ${time} דק'. מתודות מותרות: ${methods.join(',')}. חובה לפתוח ב'ציוד נדרש'. חובה לציין זמנים מדויקים ליד כל מתודה.`;
+    const gradeKey = document.getElementById('ageGroupInput').value;
+    const guideName = document.getElementById('guideNameInput').value.trim();
+    const activityType = document.getElementById('activityTypeInput').value;
+    const duration = document.getElementById('durationInput').value.trim();
+    const methods = getSelectedMethods();
+    const modelText = uploadedModelText.trim() || modelTextInput.value.trim();
 
-    generateBtn.disabled = true; document.getElementById('statusLine').innerText = "יוצר וחושב...";
-    try {
+    if (!name || !topic || !duration){
+      statusLine.textContent = "נא למלא שם פעולה, נושא וזמן כולל.";
+      statusLine.classList.add('error');
+      return;
+    }
+    if (methods.length === 0){
+      statusLine.textContent = "נא לסמן לפחות מתודה אחת.";
+      statusLine.classList.add('error');
+      return;
+    }
+
+    const prompt = buildPrompt(name, topic, gradeKey, guideName, activityType, duration, modelText, methods);
+
+    generateBtn.disabled = true;
+    generateBtn.innerHTML = 'יוצר פעולה...<span class="spinner"></span>';
+    statusLine.textContent = "";
+
+    try{
       const response = await fetch("https://text.pollinations.ai/", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: [{ role: "user", content: prompt }] })
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: [
+            { role: "system", content: "אתה עוזר מומחה לכתיבת פעולות צופים בעברית, המקפיד באדיקות על חוקי מבנה, זמנים ומתודות שנמסרים לו." },
+            { role: "user", content: prompt }
+          ]
+        })
       });
-      const text = await response.text();
-      document.getElementById('resultOutput').innerText = text;
-      document.getElementById('resultMeta').innerHTML = `<div style="font-size:1.15rem; font-weight:700; color:var(--green-deep);">${docTitle}</div>`;
-      document.getElementById('resultSection').dataset.docTitle = docTitle;
-      document.getElementById('resultSection').style.display = 'block';
-      
-      // Save to Cloud/Library
-      saveToLibrary(docTitle, topic, text);
-      
-      document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
-    } catch(e) { alert("שגיאה ביצירה."); }
-    finally { generateBtn.disabled = false; document.getElementById('statusLine').innerText = ""; }
+
+      if (!response.ok) throw new Error("שגיאת תקשורת מול שירות היצירה");
+
+      const generatedText = await response.text();
+      const docTitle = "דביר קדוש" + (name ? " - " + name : "");
+      const gradeLabel = gradeLabels[gradeKey] || gradeKey;
+
+      resultOutput.textContent = generatedText;
+      resultSection.dataset.docTitle = docTitle;
+      resultSection.dataset.gradeLabel = gradeLabel;
+      document.getElementById('resultMeta').innerHTML =
+        '<div style="font-size:1.15rem; font-weight:700; color:var(--green-deep);">' + docTitle + '</div>' +
+        '<div style="font-size:0.85rem; color:var(--ink-soft); margin-top:2px;">' + gradeLabel + ' &middot; ' + activityType + '</div>';
+      resultSection.style.display = 'block';
+
+      saveToLibrary(docTitle, topic, generatedText);
+
+      resultSection.scrollIntoView({ behavior: 'smooth' });
+    }catch(err){
+      statusLine.textContent = "אירעה שגיאה: " + err.message + " (נסו שוב)";
+      statusLine.classList.add('error');
+    }finally{
+      generateBtn.disabled = false;
+      generateBtn.textContent = "צור פעולה ושמור למאגר!";
+    }
   });
 
-  // --- Exports & Social ---
-  document.getElementById('whatsappBtn').addEventListener('click', () => {
-    const text = document.getElementById('resultOutput').innerText;
-    const title = document.getElementById('resultSection').dataset.docTitle;
-    const msg = `*${title}*\n\n${text}\n\n_נוצר באמצעות מחולל פעולות הצופים של דביר קדוש_`;
-    window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
-  });
-
+  /* ---------------------------------------------------------
+     כלים על התוצאה: העתקה, וואטסאפ, מצב הדרכה בשטח
+  --------------------------------------------------------- */
   document.getElementById('copyBtn').addEventListener('click', () => {
-    navigator.clipboard.writeText(document.getElementById('resultOutput').innerText).then(() => alert("הועתק ללוח!"));
+    navigator.clipboard.writeText(resultOutput.textContent).then(() => {
+      statusLine.classList.remove('error');
+      statusLine.textContent = "הטקסט הועתק ללוח.";
+    });
+  });
+
+  document.getElementById('whatsappBtn').addEventListener('click', () => {
+    const title = resultSection.dataset.docTitle || "פעולה";
+    const msg = "*" + title + "*\n\n" + resultOutput.textContent;
+    window.open("https://wa.me/?text=" + encodeURIComponent(msg), '_blank');
   });
 
   document.getElementById('liveModeBtn').addEventListener('click', () => document.body.classList.add('live-mode'));
   document.getElementById('closeLiveBtn').addEventListener('click', () => document.body.classList.remove('live-mode'));
 
+  /* ---------------------------------------------------------
+     ייצוא ל-PDF
+  --------------------------------------------------------- */
+  function getFileBaseName(){
+    const docTitle = resultSection.dataset.docTitle || (document.getElementById('nameInput').value.trim() || "פעולה");
+    const gradeLabel = resultSection.dataset.gradeLabel;
+    return docTitle + (gradeLabel ? " - " + gradeLabel : "");
+  }
+
   document.getElementById('exportPdfBtn').addEventListener('click', () => {
-    const wrapper = document.createElement('div'); wrapper.setAttribute('dir', 'rtl'); wrapper.style.fontFamily = "Arial"; 
-    const t = document.createElement('h1'); t.textContent = document.getElementById('resultSection').dataset.docTitle;
-    const b = document.createElement('div'); b.style.whiteSpace = "pre-wrap"; b.textContent = document.getElementById('resultOutput').innerText;
-    wrapper.appendChild(t); wrapper.appendChild(b);
-    html2pdf().set({margin: 12, filename: 'peula.pdf'}).from(wrapper).save();
+    const docTitle = resultSection.dataset.docTitle || "דביר קדוש";
+    const gradeLabel = resultSection.dataset.gradeLabel;
+    const opt = {
+      margin: 12,
+      filename: getFileBaseName() + '.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+    const wrapper = document.createElement('div');
+    wrapper.setAttribute('dir', 'rtl');
+    wrapper.style.fontFamily = "Arial, sans-serif";
+    wrapper.style.fontSize = "13px";
+    wrapper.style.lineHeight = "1.8";
+
+    const titleEl = document.createElement('h1');
+    titleEl.textContent = docTitle;
+    titleEl.style.fontSize = "20px";
+    titleEl.style.marginBottom = "2px";
+    wrapper.appendChild(titleEl);
+
+    if (gradeLabel){
+      const subEl = document.createElement('div');
+      subEl.textContent = gradeLabel;
+      subEl.style.fontSize = "13px";
+      subEl.style.color = "#55584c";
+      subEl.style.marginBottom = "14px";
+      wrapper.appendChild(subEl);
+    }
+
+    const bodyEl = document.createElement('div');
+    bodyEl.style.whiteSpace = "pre-wrap";
+    bodyEl.textContent = resultOutput.textContent;
+    wrapper.appendChild(bodyEl);
+
+    html2pdf().set(opt).from(wrapper).save();
   });
 
-  // --- Word Export Fix ---
+  /* ---------------------------------------------------------
+     ייצוא ל-Word (docx אמיתי)
+  --------------------------------------------------------- */
   document.getElementById('exportWordBtn').addEventListener('click', () => {
     const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } = docx;
-    const bodyParagraphs = document.getElementById('resultOutput').innerText.split('\n').map(line => new Paragraph({
-      alignment: AlignmentType.RIGHT, bidirectional: true, spacing: { after: 160 },
+    const docTitle = resultSection.dataset.docTitle || "דביר קדוש";
+    const gradeLabel = resultSection.dataset.gradeLabel;
+
+    const bodyParagraphs = resultOutput.textContent.split('\n').map(line => new Paragraph({
+      alignment: AlignmentType.RIGHT,
+      bidirectional: true,
+      spacing: { after: 160 },
       children: [ new TextRun({ text: line || " ", font: "David", size: 24, rightToLeft: true }) ]
     }));
-    const doc = new Document({
-      sections: [{
-        children: [
-          new Paragraph({
-            alignment: AlignmentType.RIGHT, bidirectional: true, heading: HeadingLevel.HEADING_1, spacing: { after: 240 },
-            children: [ new TextRun({ text: document.getElementById('resultSection').dataset.docTitle || "פעולה", bold: true, font: "David", size: 36, rightToLeft: true }) ]
-          }),
-          ...bodyParagraphs
-        ]
-      }]
+
+    const children = [
+      new Paragraph({
+        alignment: AlignmentType.RIGHT,
+        bidirectional: true,
+        heading: HeadingLevel.HEADING_1,
+        spacing: { after: 80 },
+        children: [ new TextRun({ text: docTitle, bold: true, font: "David", size: 36, rightToLeft: true }) ]
+      })
+    ];
+
+    if (gradeLabel){
+      children.push(new Paragraph({
+        alignment: AlignmentType.RIGHT,
+        bidirectional: true,
+        spacing: { after: 240 },
+        children: [ new TextRun({ text: gradeLabel, italics: true, font: "David", size: 22, rightToLeft: true }) ]
+      }));
+    }
+
+    children.push(...bodyParagraphs);
+
+    const doc = new Document({ sections: [{ children }] });
+
+    Packer.toBlob(doc).then(blob => {
+      saveAs(blob, getFileBaseName() + '.docx');
+    }).catch(err => {
+      statusLine.textContent = "שגיאה בייצוא ל-Word: " + err.message;
+      statusLine.classList.add('error');
     });
-    Packer.toBlob(doc).then(blob => saveAs(blob, (document.getElementById('resultSection').dataset.docTitle || "פעולה") + '.docx'));
   });
 
 })();
 </script>
+
 </body>
 </html>
